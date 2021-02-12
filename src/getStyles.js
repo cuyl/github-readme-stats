@@ -1,3 +1,5 @@
+const { getCardColors } = require("./common/utils");
+
 // @ts-check
 /**
  * @param {number} value
@@ -65,10 +67,13 @@ const getStyles = ({
   titleColor,
   textColor,
   iconColor,
+  bgColor,
   show_icons,
   progress,
 }) => {
   return `
+    ${typeof bgColor === "string" ? `.card-bg {fill: ${bgColor}}` : ""}
+    .header { fill: ${titleColor} }
     .stat {
       font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; fill: ${textColor};
     }
@@ -112,4 +117,30 @@ const getStyles = ({
   `;
 };
 
-module.exports = { getStyles, getAnimations };
+const getAutoStyles = ({
+  show_icons,
+  progress,
+  dark_theme = "dark",
+  light_theme = "light",
+}) => `
+  @media (prefers-color-scheme: dark) {
+    ${getStyles({
+      ...getCardColors({
+        theme: dark_theme,
+      }),
+      show_icons,
+      progress,
+    })}    
+  }
+  @media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
+    ${getStyles({
+      ...getCardColors({
+        theme: light_theme,
+      }),
+      show_icons,
+      progress,
+    })}
+  }
+  `;
+
+module.exports = { getAutoStyles, getStyles, getAnimations };

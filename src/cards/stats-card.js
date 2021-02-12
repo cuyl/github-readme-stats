@@ -2,7 +2,7 @@
 const I18n = require("../common/I18n");
 const Card = require("../common/Card");
 const icons = require("../common/icons");
-const { getStyles } = require("../getStyles");
+const { getAutoStyles, getStyles } = require("../getStyles");
 const { statCardLocales } = require("../translations");
 const {
   kFormatter,
@@ -79,6 +79,8 @@ const renderStatsCard = (stats = {}, options = { hide: [] }) => {
     border_color,
     locale,
     disable_animations = false,
+    dark_theme,
+    light_theme,
   } = options;
 
   const lheight = parseInt(String(line_height), 10);
@@ -197,7 +199,12 @@ const renderStatsCard = (stats = {}, options = { hide: [] }) => {
   // the better user's score the the rank will be closer to zero so
   // subtracting 100 to get the progress in 100%
   const progress = 100 - rank.score;
-  const cssStyles = getStyles({
+  const cssStyles = theme === "auto" ? getAutoStyles({
+    show_icons,
+    progress,
+    dark_theme,
+    light_theme,
+  }) : getStyles({
     titleColor,
     textColor,
     iconColor,
