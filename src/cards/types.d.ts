@@ -1,4 +1,4 @@
-type ThemeNames = keyof typeof import("../../themes/index.js");
+type ThemeNames = keyof typeof import("../../themes/index.js")["themes"];
 type RankIcon = "default" | "github" | "percentile";
 
 export type CommonOptions = {
@@ -6,7 +6,7 @@ export type CommonOptions = {
   icon_color: string;
   text_color: string;
   bg_color: string;
-  theme: ThemeNames;
+  theme: ThemeNames | "auto";
   border_radius: number;
   border_color: string;
   locale: string;
@@ -28,6 +28,8 @@ export type StatCardOptions = CommonOptions & {
   text_bold: boolean;
   rank_icon: RankIcon;
   show: string[];
+  light_theme: ThemeNames;
+  dark_theme: ThemeNames;
 };
 
 export type RepoCardOptions = CommonOptions & {

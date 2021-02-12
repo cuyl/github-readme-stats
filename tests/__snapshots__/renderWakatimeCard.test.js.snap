@@ -71,6 +71,7 @@ exports[`Test Render WakaTime Card should render correctly 1`] = `
         
 
         <rect
+          class="card-bg"
           data-testid="card-bg"
           x="0.5"
           y="0.5"
@@ -229,6 +230,7 @@ exports[`Test Render WakaTime Card should render correctly with compact layout 1
         
 
         <rect
+          class="card-bg"
           data-testid="card-bg"
           x="0.5"
           y="0.5"
@@ -381,6 +383,7 @@ exports[`Test Render WakaTime Card should render correctly with compact layout w
         
 
         <rect
+          class="card-bg"
           data-testid="card-bg"
           x="0.5"
           y="0.5"
@@ -533,6 +536,7 @@ exports[`Test Render WakaTime Card should render correctly with percent display 
         
 
         <rect
+          class="card-bg"
           data-testid="card-bg"
           x="0.5"
           y="0.5"

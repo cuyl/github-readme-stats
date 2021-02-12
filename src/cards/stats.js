@@ -119,6 +119,7 @@ const getProgressAnimation = ({ progress }) => {
  * Retrieves CSS styles for a card.
  *
  * @param {Object} colors The colors to use for the card.
+ * @param {string | string[]} colors.bgColor The ring color.
  * @param {string} colors.titleColor The title color.
  * @param {string} colors.textColor The text color.
  * @param {string} colors.iconColor The icon color.
@@ -128,6 +129,7 @@ const getProgressAnimation = ({ progress }) => {
  * @returns {string} Card CSS styles.
  */
 const getStyles = ({
+  bgColor,
   // eslint-disable-next-line no-unused-vars
   titleColor,
   textColor,
@@ -137,6 +139,8 @@ const getStyles = ({
   progress,
 }) => {
   return `
+    ${typeof bgColor === "string" ? `.card-bg {fill: ${bgColor}}` : ""}
+    .header { fill: ${titleColor} }
     .stat {
       font: 600 14px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; fill: ${textColor};
     }
@@ -187,6 +191,35 @@ const getStyles = ({
   `;
 };
 
+const getAutoStyles = ({
+  show_icons,
+  progress,
+  dark_theme = "dark",
+  light_theme = "light",
+  ringColor,
+}) => `
+  @media (prefers-color-scheme: dark) {
+    ${getStyles({
+      ...getCardColors({
+        theme: dark_theme,
+      }),
+      ringColor,
+      show_icons,
+      progress,
+    })}    
+  }
+  @media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
+    ${getStyles({
+      ...getCardColors({
+        theme: light_theme,
+      }),
+      ringColor,
+      show_icons,
+      progress,
+    })}
+  }
+  `;
+
 /**
  * @typedef {import('../fetchers/types').StatsData} StatsData
  * @typedef {import('./types').StatCardOptions} StatCardOptions
@@ -236,6 +269,8 @@ const renderStatsCard = (stats, options = {}) => {
     number_format = "short",
     locale,
     disable_animations = false,
+    dark_theme,
+    light_theme,
     rank_icon = "default",
     show = [],
   } = options;
@@ -398,22 +433,32 @@ const renderStatsCard = (stats, options = {}) => {
 
   // the lower the user's percentile the better
   const progress = 100 - rank.percentile;
-  const cssStyles = getStyles({
-    titleColor,
-    ringColor,
-    textColor,
-    iconColor,
-    show_icons,
-    progress,
-  });
+  const cssStyles =
+    theme === "auto"
+      ? getAutoStyles({
+          ringColor,
+          show_icons,
+          progress,
+          dark_theme,
+          light_theme,
+        })
+      : getStyles({
+          bgColor,
+          titleColor,
+          ringColor,
+          textColor,
+          iconColor,
+          show_icons,
+          progress,
+        });
 
   const calculateTextWidth = () => {
     return measureText(
       custom_title
         ? custom_title
         : statItems.length
-          ? i18n.t("statcard.title")
-          : i18n.t("statcard.ranktitle"),
+        ? i18n.t("statcard.title")
+        : i18n.t("statcard.ranktitle"),
     );
   };
 
@@ -431,14 +476,14 @@ const renderStatsCard = (stats, options = {}) => {
           Infinity,
         )
       : statItems.length
-        ? RANK_CARD_MIN_WIDTH
-        : RANK_ONLY_CARD_MIN_WIDTH) + iconWidth;
+      ? RANK_CARD_MIN_WIDTH
+      : RANK_ONLY_CARD_MIN_WIDTH) + iconWidth;
   const defaultCardWidth =
     (hide_rank
       ? CARD_DEFAULT_WIDTH
       : statItems.length
-        ? RANK_CARD_DEFAULT_WIDTH
-        : RANK_ONLY_CARD_DEFAULT_WIDTH) + iconWidth;
+      ? RANK_CARD_DEFAULT_WIDTH
+      : RANK_ONLY_CARD_DEFAULT_WIDTH) + iconWidth;
   let width = card_width
     ? isNaN(card_width)
       ? defaultCardWidth
@@ -502,8 +547,8 @@ const renderStatsCard = (stats, options = {}) => {
     ? ""
     : `<g data-testid="rank-circle"
           transform="translate(${calculateRankXTranslation()}, ${
-            height / 2 - 50
-          })">
+        height / 2 - 50
+      })">
         <circle class="rank-circle-rim" cx="-10" cy="8" r="40" />
         <circle class="rank-circle" cx="-10" cy="8" r="40" />
         <g class="rank-text">
