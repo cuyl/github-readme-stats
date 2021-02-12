@@ -17,6 +17,8 @@ exports[`Test Render Wakatime Card should render correctly 1`] = `
           }
           
     
+    
+    .header { fill: #2f80ed }
     .stat {
       font: 600 14px 'Segoe UI', Ubuntu, \\"Helvetica Neue\\", Sans-Serif; fill: #333;
     }
@@ -64,6 +66,7 @@ exports[`Test Render Wakatime Card should render correctly 1`] = `
         
 
         <rect
+          class=\\"card-bg\\"
           data-testid=\\"card-bg\\"
           x=\\"0.5\\"
           y=\\"0.5\\"
@@ -168,6 +171,8 @@ exports[`Test Render Wakatime Card should render correctly with compact layout 1
           }
           
     
+    
+    .header { fill: #2f80ed }
     .stat {
       font: 600 14px 'Segoe UI', Ubuntu, \\"Helvetica Neue\\", Sans-Serif; fill: #333;
     }
@@ -215,6 +220,7 @@ exports[`Test Render Wakatime Card should render correctly with compact layout 1
         
 
         <rect
+          class=\\"card-bg\\"
           data-testid=\\"card-bg\\"
           x=\\"0.5\\"
           y=\\"0.5\\"
